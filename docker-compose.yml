@@ -16,8 +16,6 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
-    extra_hosts:
-    - "host.docker.internal:host-gateway"
 
   storageapi:
     image: storageapi
@@ -34,5 +32,4 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - ./tmp:/tmp

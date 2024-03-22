@@ -17,11 +17,11 @@ app.MapGet("/", async (HttpRequest request) =>
     var userAgent = request.Headers["User-Agent"].ToString();
     var referer = request.Headers["Referer"].ToString();
 
-    using var channel = GrpcChannel.ForAddress("https://localhost:5277");
+    using var channel = GrpcChannel.ForAddress("http://storageapi:5201");
     var client = channel.CreateGrpcService<IStorageService>();
 
     await client.StoreAsync(
-        new TrackingRequest { IPAddress = ipAddress, UserAgent = userAgent, Referer = referer });
+        new TrackingRequest { Date = DateTime.Now, IPAddress = ipAddress, UserAgent = userAgent, Referer = referer });
 });
 
 app.Run();
