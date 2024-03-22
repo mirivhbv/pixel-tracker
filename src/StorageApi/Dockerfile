@@ -9,6 +9,7 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["src/StorageApi/StorageApi.csproj", "src/StorageApi/"]
+COPY "src/ProtoContract" "src/ProtoContract"
 RUN dotnet restore "src/StorageApi/StorageApi.csproj"
 COPY . .
 WORKDIR "/src/src/StorageApi"

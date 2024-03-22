@@ -1,11 +1,17 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B899407E-12B7-43AD-8C3E-9F2D8D1A2CA7}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelApi", "src\PixelApi\PixelApi.csproj", "{38DE64D2-DD76-46CE-AF41-FD54A0ABB704}"
+EndProject
+Project("{B852C902-D1B3-426E-B83D-0D406F3FA0FC}") = "StorageApi", "src\StorageApi\StorageApi.csproj", "{B852C902-D1B3-426E-B83D-0D406F3FA0FC}"
+EndProject
+Project("{5E60AE9B-ADE7-4BB6-B296-E4F6872EA4B1}") = "ProtoContract", "src\ProtoContract\ProtoContract.csproj", "{5E60AE9B-ADE7-4BB6-B296-E4F6872EA4B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +28,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B852C902-D1B3-426E-B83D-0D406F3FA0FC} = {B899407E-12B7-43AD-8C3E-9F2D8D1A2CA7}
+		{5E60AE9B-ADE7-4BB6-B296-E4F6872EA4B1} = {B899407E-12B7-43AD-8C3E-9F2D8D1A2CA7}
 		{38DE64D2-DD76-46CE-AF41-FD54A0ABB704} = {B899407E-12B7-43AD-8C3E-9F2D8D1A2CA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
