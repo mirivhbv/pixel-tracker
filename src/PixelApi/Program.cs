@@ -1,3 +1,4 @@
+using Grpc.Core;
 using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
 using ProtoContract.Contracts;
@@ -20,8 +21,17 @@ app.MapGet("/", async (HttpRequest request) =>
     using var channel = GrpcChannel.ForAddress("http://storageapi:5201");
     var client = channel.CreateGrpcService<IStorageService>();
 
-    await client.StoreAsync(
-        new TrackingRequest { Date = DateTime.Now, IPAddress = ipAddress, UserAgent = userAgent, Referer = referer });
+    try
+    {
+        await client.StoreAsync(
+            new TrackingRequest { Date = DateTime.Now, IPAddress = ipAddress, UserAgent = userAgent, Referer = referer });
+    }
+    catch (RpcException ex)
+    {
+        Console.WriteLine(ex.Status.Detail);
+        // logger.LogDebug(ex, ex.Status.Detail);
+        throw;
+    }
 });
 
 app.Run();
