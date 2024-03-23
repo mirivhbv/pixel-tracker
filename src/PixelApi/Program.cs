@@ -42,7 +42,7 @@ var client = invoker.CreateGrpcService<IStorageService>();
 app.Lifetime.ApplicationStopping.Register(() =>
 {
     // regardless of the state of the channel dispose.
-    try { channel.Dispose(); }
+    try { channel.ShutdownAsync(); }
     catch { /* intentionally left blank */ }
 });
 
