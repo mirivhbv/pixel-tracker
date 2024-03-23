@@ -1,6 +1,5 @@
 namespace StorageApi.Models;
 
-// TODO: record?
 public class Track
 {
     public DateTime Date { get; set; }
@@ -9,5 +8,5 @@ public class Track
 
     public string? UserAgent { get; set; }
 
-    public string IPAddress { get; set; }
+    public string? IpAddress { get; set; }
 }

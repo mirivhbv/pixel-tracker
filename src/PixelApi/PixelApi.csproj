@@ -10,9 +10,10 @@
     <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
     <PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
   </ItemGroup>
-    
+
   <ItemGroup>
-    <ProjectReference Include="..\ProtoContract\ProtoContract.csproj" />
+    <ProjectReference Include="..\Core.Contracts\Core.Contracts.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

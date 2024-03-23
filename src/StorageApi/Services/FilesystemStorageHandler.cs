@@ -17,16 +17,17 @@ public class FilesystemStorageHandler : IStorageHandler
 
     public async Task SaveAsync(Track track)
     {
-        if (string.IsNullOrEmpty(track.IPAddress))
+        track.IpAddress = null;
+        if (string.IsNullOrEmpty(track.IpAddress))
         {
-            _logger.LogWarning("Event's IPAddress is null or empty");
-            throw new ArgumentException("Cannot be neither null or empty", nameof(track.IPAddress));
+            _logger.LogWarning("Event's IpAddress is null or empty");
+            throw new ArgumentException("Cannot be neither null or empty", nameof(track.IpAddress));
         }
 
         if (string.IsNullOrEmpty(track.Referer)) track.Referer = "null";
         if (string.IsNullOrEmpty(track.UserAgent)) track.UserAgent = "null";
 
-        var entry = $"{track.Date}|{track.Referer}|{track.UserAgent}|{track.IPAddress}";
+        var entry = $"{track.Date}|{track.Referer}|{track.UserAgent}|{track.IpAddress}";
         await File.AppendAllLinesAsync(_storagePath, [entry]);
 
         _logger.LogInformation($"Track stored: {entry}");

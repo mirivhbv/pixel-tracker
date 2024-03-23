@@ -1,4 +1,4 @@
-using ProtoContract.Contracts;
+using Core.Contracts;
 using StorageApi.Models;
 
 namespace StorageApi.Services;
@@ -16,13 +16,11 @@ public class StorageService : IStorageService
         _storageHandler = storageService ?? throw new ArgumentNullException(nameof(storageService));
     }
 
-    public Task StoreAsync(TrackingRequest request)
+    public Task StoreAsync(TrackEventRequest request)
     {
-        _logger.LogInformation("Store method called");
-
         return _storageHandler.SaveAsync(new Track {
             Date = request.Date,
-            IPAddress = request.IPAddress,
+            IpAddress = request.IpAddress,
             Referer = request.Referer,
             UserAgent = request.UserAgent
         });
