@@ -12,6 +12,8 @@ public class FilesystemStorageHandler : IStorageHandler
 
     private const string FallbackPath = "/tmp/visits.log";
 
+    private static readonly SemaphoreSlim Semaphore = new(1, 1);
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -29,6 +31,7 @@ public class FilesystemStorageHandler : IStorageHandler
     /// Appends <paramref name="track"/> to file.
     /// </remarks>
     /// <exception cref="ArgumentException"><see cref="Track.IpAddress"/> is null or empty.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="track"/> is null.</exception>
     public async Task SaveAsync(Track track)
     {
         if (track == null)
@@ -43,7 +46,16 @@ public class FilesystemStorageHandler : IStorageHandler
             throw new ArgumentException("Cannot be neither null or empty", nameof(track.IpAddress));
         }
 
-        await File.AppendAllLinesAsync(_storagePath, [track.ToString()]);
+        await Semaphore.WaitAsync();
+        try
+        {
+            await File.AppendAllLinesAsync(_storagePath, [track.ToString()]);
+        }
+        finally
+        {
+            Semaphore.Release();
+        }
+
         _logger.LogInformation($"Track stored: {track}");
     }
 }
