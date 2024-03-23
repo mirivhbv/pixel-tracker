@@ -1,7 +1,6 @@
 using Core.Contracts;
 using Core.Grpc;
 using Core.Grpc.Interceptors;
-using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
@@ -9,8 +8,6 @@ using ProtoBuf.Grpc.Client;
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
-
-app.UseHttpsRedirection();
 
 if (app.Environment.IsDevelopment())
 {
@@ -59,7 +56,7 @@ app.MapGet("/track", async (HttpRequest request) =>
     try
     {
         await client.StoreAsync(
-            new TrackEventRequest { Date = DateTime.Now, IpAddress = ipAddress, UserAgent = userAgent, Referer = referer });
+            new TrackEventRequest { Date = DateTime.UtcNow, IpAddress = ipAddress, UserAgent = userAgent, Referer = referer });
     }
     catch (Exception ex)
     {

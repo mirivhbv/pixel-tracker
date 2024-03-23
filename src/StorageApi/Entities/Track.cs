@@ -28,6 +28,6 @@ public class Track
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"{Date}|{(string.IsNullOrEmpty(Referer) ? "null" : Referer)}|{(string.IsNullOrEmpty(UserAgent) ? "null" : UserAgent)}|{(string.IsNullOrEmpty(IpAddress) ? "null" : IpAddress)}";
+        return $"{Date:yyyy-MM-ddTHH:mm:ss.fffZ}|{(string.IsNullOrEmpty(Referer) ? "null" : Referer)}|{(string.IsNullOrEmpty(UserAgent) ? "null" : UserAgent)}|{(string.IsNullOrEmpty(IpAddress) ? "null" : IpAddress)}";
     }
 }
