@@ -12,8 +12,4 @@ var app = builder.Build();
 
 app.MapGrpcService<StorageService>();
 
-// TODO: drop them
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/store", () => "Store it");
-
 app.Run();

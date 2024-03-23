@@ -43,9 +43,7 @@ public class FilesystemStorageHandler : IStorageHandler
             throw new ArgumentException("Cannot be neither null or empty", nameof(track.IpAddress));
         }
 
-        var entry = $"{track.Date}|{track.Referer}|{track.UserAgent}|{track.IpAddress}";
-        await File.AppendAllLinesAsync(_storagePath, [ track.ToString() ]);
-
+        await File.AppendAllLinesAsync(_storagePath, [track.ToString()]);
         _logger.LogInformation($"Track stored: {track}");
     }
 }
