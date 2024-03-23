@@ -30,10 +30,6 @@ services:
     networks:
       - pixel-tracker-network
 
-  abapp:
-    image: alpine:3.8
-    tty: true
-
 networks:
   pixel-tracker-network:
     driver: bridge

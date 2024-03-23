@@ -1,24 +1,19 @@
 using Core.Contracts;
-using StorageApi.Models;
+using StorageApi.Entities;
 
 namespace StorageApi.Services;
 
-// todo: move it to grpc services namespace?
-public class StorageService : IStorageService
+/// <summary>
+/// Server grpc service of <see cref="IStorageService"/>.
+/// </summary>
+/// <param name="storageHandler">Storage handler to store give track event.</param>
+public class StorageService(IStorageHandler storageHandler)
+    : IStorageService
 {
-    private readonly ILogger<StorageService> _logger;
-    private readonly IStorageHandler _storageHandler;
-
-    public StorageService(ILogger<StorageService> logger, IStorageHandler storageService)
-    {
-        // todo: do we need null checking?
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _storageHandler = storageService ?? throw new ArgumentNullException(nameof(storageService));
-    }
-
     public Task StoreAsync(TrackEventRequest request)
     {
-        return _storageHandler.SaveAsync(new Track {
+        // can be done through mapper, but skip it due simplicity and time.
+        return storageHandler.SaveAsync(new Track {
             Date = request.Date,
             IpAddress = request.IpAddress,
             Referer = request.Referer,
