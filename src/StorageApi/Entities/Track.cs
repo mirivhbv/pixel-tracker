@@ -25,6 +25,9 @@ public class Track
     /// </summary>
     public string? IpAddress { get; set; }
 
+    // Better would be having parser
+    // and unit tests around that
+    // but simplicity leave it as is
     /// <inheritdoc />
     public override string ToString()
     {

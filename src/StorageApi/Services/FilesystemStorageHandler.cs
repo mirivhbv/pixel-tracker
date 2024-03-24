@@ -7,7 +7,6 @@ namespace StorageApi.Services;
 /// </summary>
 public class FilesystemStorageHandler : IStorageHandler
 {
-    private readonly string _storagePath;
     private readonly ILogger<FilesystemStorageHandler> _logger;
 
     private const string FallbackPath = "/tmp/visits.log";
@@ -17,14 +16,19 @@ public class FilesystemStorageHandler : IStorageHandler
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="configuration">Reads file store path from configuration. (Required)</param>
+    /// <param name="configuration">Reads file store path from configuration. If not provided, uses fallback path of '/tmp/visits.log'.</param>
     /// <param name="logger">Logger instance. (Required)</param>
     /// <exception cref="ArgumentNullException"></exception>
     public FilesystemStorageHandler(IConfiguration configuration, ILogger<FilesystemStorageHandler> logger)
     {
-        _storagePath = configuration["StoragePath"] ?? FallbackPath;
+        StoragePath = configuration?["StoragePath"] ?? FallbackPath;
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
+
+    /// <summary>
+    /// Path of the file.
+    /// </summary>
+    public string StoragePath { get; }
 
     /// <inheritdoc />
     /// <remarks>
@@ -40,6 +44,7 @@ public class FilesystemStorageHandler : IStorageHandler
             throw new ArgumentNullException(nameof(track));
         }
 
+        // IP Address is mandatory.
         if (string.IsNullOrEmpty(track.IpAddress))
         {
             _logger.LogWarning("Track entity's IpAddress is null or empty.");
@@ -49,7 +54,7 @@ public class FilesystemStorageHandler : IStorageHandler
         await Semaphore.WaitAsync();
         try
         {
-            await File.AppendAllLinesAsync(_storagePath, [track.ToString()]);
+            await File.AppendAllLinesAsync(StoragePath, [track.ToString()]);
         }
         finally
         {

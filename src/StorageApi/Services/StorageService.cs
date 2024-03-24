@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Core.Contracts;
 using StorageApi.Entities;
 
@@ -7,6 +8,7 @@ namespace StorageApi.Services;
 /// Server grpc service of <see cref="IStorageService"/>.
 /// </summary>
 /// <param name="storageHandler">Storage handler to store give track event.</param>
+[ExcludeFromCodeCoverage]
 public class StorageService(IStorageHandler storageHandler)
     : IStorageService
 {
