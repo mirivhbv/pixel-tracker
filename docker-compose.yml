@@ -1,6 +1,5 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
-
 version: '3.4'
+name: 'pixel-tracker'
 
 services:
   pixelapi:
@@ -9,7 +8,12 @@ services:
       context: .
       dockerfile: src/PixelApi/Dockerfile
     ports:
-      - 5276:5276
+      - 5200:5200
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5200
+    networks:
+      - pixel-tracker-network
 
   storageapi:
     image: storageapi
@@ -17,4 +21,15 @@ services:
       context: .
       dockerfile: src/StorageApi/Dockerfile
     ports:
-      - 5277:5277
+      - 5201:5201
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5201
+    volumes:
+      - ./tmp:/tmp
+    networks:
+      - pixel-tracker-network
+
+networks:
+  pixel-tracker-network:
+    driver: bridge
