@@ -44,4 +44,4 @@ msbuild.wrn
 
 # Project specific
 tmp/
-!tmp/visits.log
+rabbitmq/

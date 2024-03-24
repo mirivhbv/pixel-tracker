@@ -1,16 +1,16 @@
-using StorageApi.Entities;
+using Core.Messaging;
 
 namespace StorageApi.Services;
 
 /// <summary>
-/// The interface to save <see cref="Track"/> into the storage.
+/// The interface to save <see cref="TrackEvent"/> into the storage.
 /// </summary>
 public interface IStorageHandler
 {
     /// <summary>
-    /// Save <paramref name="track"/> into underlying storage medium.
+    /// Save <paramref name="trackEvent"/> into underlying storage medium.
     /// </summary>
-    /// <param name="track">Track entity. (Required).</param>
+    /// <param name="trackEvent">Track entity. (Required).</param>
     /// <returns></returns>
-    Task SaveAsync(Track track);
+    Task SaveAsync(TrackEvent? trackEvent);
 }

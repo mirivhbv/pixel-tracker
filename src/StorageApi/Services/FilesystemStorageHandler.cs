@@ -1,4 +1,4 @@
-using StorageApi.Entities;
+using Core.Messaging;
 
 namespace StorageApi.Services;
 
@@ -10,8 +10,6 @@ public class FilesystemStorageHandler : IStorageHandler
     private readonly ILogger<FilesystemStorageHandler> _logger;
 
     private const string FallbackPath = "/tmp/visits.log";
-
-    private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
     /// <summary>
     /// Constructor.
@@ -32,35 +30,31 @@ public class FilesystemStorageHandler : IStorageHandler
 
     /// <inheritdoc />
     /// <remarks>
-    /// Appends <paramref name="track"/> to file.
+    /// Appends <paramref name="trackEvent"/> to file.
     /// </remarks>
-    /// <exception cref="ArgumentException"><see cref="Track.IpAddress"/> is null or empty.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="track"/> is null.</exception>
-    public async Task SaveAsync(Track track)
+    /// <exception cref="ArgumentException"><see cref="TrackEvent.IpAddress"/> is null or empty.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="trackEvent"/> is null.</exception>
+    public async Task SaveAsync(TrackEvent? trackEvent)
     {
-        if (track == null)
+        if (trackEvent == null)
         {
             _logger.LogWarning("Track event is null or empty.");
-            throw new ArgumentNullException(nameof(track));
+            throw new ArgumentNullException(nameof(trackEvent));
         }
 
         // IP Address is mandatory.
-        if (string.IsNullOrEmpty(track.IpAddress))
+        if (string.IsNullOrEmpty(trackEvent.IpAddress))
         {
             _logger.LogWarning("Track entity's IpAddress is null or empty.");
-            throw new ArgumentException("Cannot be neither null or empty", nameof(track.IpAddress));
+            throw new ArgumentException("Cannot be neither null or empty", nameof(trackEvent.IpAddress));
         }
 
-        await Semaphore.WaitAsync();
-        try
-        {
-            await File.AppendAllLinesAsync(StoragePath, [track.ToString()]);
-        }
-        finally
-        {
-            Semaphore.Release();
-        }
+        // Note: Since switched to rabbitmq and considering
+        // storage api going to be max one instance
+        // we may drop locking around file appending -- rabbitmq
+        // configured to consume single message at a time.
+        await File.AppendAllLinesAsync(StoragePath, [trackEvent.ToString()]);
 
-        _logger.LogInformation($"Track stored: {track}");
+        _logger.LogInformation($"Track stored: {trackEvent}");
     }
 }

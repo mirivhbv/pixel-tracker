@@ -1,9 +1,9 @@
-namespace StorageApi.Entities;
+﻿namespace Core.Messaging;
 
 /// <summary>
 /// Represents track entity.
 /// </summary>
-public class Track
+public class TrackEvent
 {
     /// <summary>
     /// Date of track recorded.

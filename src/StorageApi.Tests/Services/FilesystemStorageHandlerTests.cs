@@ -1,6 +1,6 @@
+using Core.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
-using StorageApi.Entities;
 using StorageApi.Services;
 
 namespace StorageApi.Tests.Services;
@@ -88,8 +88,8 @@ public class FilesystemStorageHandlerTests
 
         // Act
         // Assert
-        var actual = Assert.ThrowsAsync<ArgumentException>(() => sut.SaveAsync(new Track()));
-        Assert.That(actual?.ParamName, Is.EqualTo(nameof(Track.IpAddress)));
+        var actual = Assert.ThrowsAsync<ArgumentException>(() => sut.SaveAsync(new TrackEvent()));
+        Assert.That(actual?.ParamName, Is.EqualTo(nameof(TrackEvent.IpAddress)));
     }
 
     [Test]
@@ -103,7 +103,7 @@ public class FilesystemStorageHandlerTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configs!)
             .Build();
-        var track = new Track
+        var track = new TrackEvent
         {
             Date = DateTime.UtcNow,
             IpAddress = "127.0.0.10",
@@ -123,7 +123,7 @@ public class FilesystemStorageHandlerTests
 
     [Test]
     [TestCaseSource(nameof(TrackTestCases))]
-    public async Task SaveAsync_ShouldSaveInCorrectFormat((Track track, string expected) pair)
+    public async Task SaveAsync_ShouldSaveInCorrectFormat((TrackEvent track, string expected) pair)
     {
         // Arrange
         var track = pair.track;
@@ -161,7 +161,7 @@ public class FilesystemStorageHandlerTests
         var runningTasks = new List<Task>();
 
         // Act
-        var track = new Track
+        var track = new TrackEvent
         {
             Date = DateTime.UtcNow,
             IpAddress = "127.0.0.10",
@@ -180,12 +180,12 @@ public class FilesystemStorageHandlerTests
         Assert.That(lines, Has.Length.EqualTo(expected));
     }
 
-    private static IEnumerable<(Track, string)> TrackTestCases()
+    private static IEnumerable<(TrackEvent, string)> TrackTestCases()
     {
         var date = DateTime.UtcNow;
-        yield return (new Track { Date = date, Referer = "https://google.com", UserAgent = "postman/1.0", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|https://google.com|postman/1.0|127.0.0.10");
-        yield return (new Track { Date = date, Referer = "   ", UserAgent = "          ", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|   |          |127.0.0.10");
-        yield return (new Track { Date = date, Referer = "", UserAgent = "", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|null|null|127.0.0.10");
-        yield return (new Track { Date = date, Referer = null, UserAgent = null, IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|null|null|127.0.0.10");
+        yield return (new TrackEvent { Date = date, Referer = "https://google.com", UserAgent = "postman/1.0", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|https://google.com|postman/1.0|127.0.0.10");
+        yield return (new TrackEvent { Date = date, Referer = "   ", UserAgent = "          ", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|   |          |127.0.0.10");
+        yield return (new TrackEvent { Date = date, Referer = "", UserAgent = "", IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|null|null|127.0.0.10");
+        yield return (new TrackEvent { Date = date, Referer = null, UserAgent = null, IpAddress = "127.0.0.10" }, $"{date:yyyy-MM-ddTHH:mm:ss.fffZ}|null|null|127.0.0.10");
     }
 }

@@ -14,6 +14,8 @@ services:
       - ASPNETCORE_URLS=http://+:5200
     networks:
       - pixel-tracker-network
+    depends_on:
+      - rabbitmq
 
   storageapi:
     image: storageapi
@@ -27,6 +29,21 @@ services:
       - ASPNETCORE_URLS=http://+:5201
     volumes:
       - ./tmp:/tmp
+    networks:
+      - pixel-tracker-network
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3.13-alpine
+    ports:
+      - 5672:5672
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
     networks:
       - pixel-tracker-network
 
